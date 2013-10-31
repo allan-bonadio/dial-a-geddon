@@ -1,0 +1,21 @@
+#!/bin/bash
+echo "double ^C to quit; single to refresh"
+
+runOnce ( )
+{
+	#trap runOnce 2
+	cat main.stylus | stylus > statics/main.css
+	
+	node --debug app  --dev
+	#node --debug-brk app --dev
+	echo '|===|' `date +%T` "   Node return code is $?"
+	echo
+}
+
+
+while true
+do
+	runOnce
+	sleep 0.3  # hit ^C the second time during this
+	
+done

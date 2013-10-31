@@ -1,0 +1,53 @@
+<div id=inputs style='position: relative; padding-left: 2em;'>
+	<table style='position:absolute; left: 90px; top: 85px; color: #640;'>
+		<tr>
+			<td style='text-align:right; '>date:</td>
+			<td><select name=date id=date >
+				<option value=any>any</option>
+				<script>
+					for (var d = 1; d <= 31; d++)
+						document.write("  <option value="+ d +">"+ d +"</option>\n");
+				</script>
+			</select>
+			</td>
+		</tr>
+		<tr>
+			<td style='text-align:right; '>month:</td>
+			<td><select name=month id=month>
+				<option value=any>any month</option>
+				<option value=3>March</option>
+				<option value=4>April</option>
+				<option value=5>May</option>
+				<option value=6>June</option>
+				<option value=7>July</option>
+				<option value=8>August</option>
+				<option value=9>September</option>
+				<option value=10>October</option>
+				<option value=11>November</option>
+				<option value=12>December</option>
+				<option value=1>January</option>
+				<option value=2>February</option>
+			</select></td>
+		</tr>
+		<tr>
+			<td style='text-align:right; '>year:</td>
+			<td><input name=year id=year size=10 ></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><button type='button' id=justify>Justify</button></td>
+		</tr>
+	</table>
+	
+	{{! this image has color #ddb980 in the middle of it }}
+	<img src=flatscroll.png style=z-index:-9 onmousedown=event.preventDefault() >
+</div>
+
+<div>
+Now, YOU can augment the credibility of God's foretelling about the end of days.  Steps:
+</div>
+<ul>
+	<li>Enter the date God has given you that Armageddon is on</li>
+	<li>Click <b>Justify</b></li>
+	<li>Dial-a-Geddon will retrieve several formulas of Biblical scriptures that may explain your date.  We recommend you choose one that is consonant with your recent sermons.</li>
+</ul>

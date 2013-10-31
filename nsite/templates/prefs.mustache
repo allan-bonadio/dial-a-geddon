@@ -1,0 +1,28 @@
+
+<div id=prefsFog>
+	<div id=prefsPanel>
+		<h2>Settings for Dial-a-Geddon</h2>
+		<div style=height:2em></div>
+		<input type=checkbox id=cutItOut name=cutItOut 
+				onchange='setCookie("geddonCutItOut", $("cutItOut").checked)'>
+		<label for=cutItOut>Cut out the dumb animation</label>
+		<div style=height:2em></div>
+	
+		No more than
+		<select name=formulasLimit id=formulasLimit 
+				onchange='setCookie("geddonFormulasLimit", $("formulasLimit").value)'>
+			<option value=10>ten</option>
+			<option value=30>thirty</option>
+			<option value=100>one hundred</option>
+			<option value=300>three hundreds</option>
+			<option value=1000>one thousand</option>
+			<option value=3000>three thousands</option>
+			<option value=10000>ten thousands</option>
+		</select>
+		of formulas, please.
+		<div style=height:2em></div>
+
+		<button id=prefsPanelOK>OK</button>
+	</div>
+</div>
+<span id=prefsButton>preferences</span>

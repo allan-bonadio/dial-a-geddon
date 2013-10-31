@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang=en-us>
+<head>
+	<meta charset='utf-8'>
+	<title>Dial - a - Geddon</title>
+
+	<link href="main.css" rel="stylesheet">
+<body>
+	<div id=nukeFlash></div>
+	
+	{{! the font size selector, near the top for those who can't see well.
+		Must be OUTSIDE the inner body cuz its margins are in ems }}
+	<div id=fontSizeSelect title='To make the text larger or smaller, click here'>
+	<script>
+		[10, 13, 16, 20, 24, 30].forEach(function(fs) {
+			document.writeln("<span id=fs"+ fs +" onclick='setFontSize("+ 
+				fs +")' style='font-size:"+ fs +"px;' >A</span>");
+		});
+	</script>
+	</div>
+
+	<div id=innerBody>
+		{{> intro.mustache}}
+		{{> input.mustache}}
+		{{> results.mustache}}
+		{{> prefs.mustache}}
+		{{> footer.mustache}}
+	</div>
+
+	{{! include all the client side javascript, either directly or a bunch of <script tags }}
+	{{{webjs}}}
+
+</body>
+</html>

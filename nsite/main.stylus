@@ -1,0 +1,201 @@
+body_text_color = #ffc
+link_color = #ff0
+dark_link_color = #880
+minor_heading_size = 1.5em
+
+////////////////////////////////////////////// general
+
+a
+	color: link_color
+
+.link-like-text
+	color: link_color
+	cursor: pointer
+	text-decoration: underline
+
+input, select, button, a
+	font-size: 100%
+	&:focus
+		outline-color: link_color
+
+////////////////////////////////////////////// specific
+
+body
+	margin: 0
+	padding: 0
+	font-family: verdana,helvetica,sans-serif
+	font-size: 100%
+	background: url(stars6bg.png) black
+	color: body_text_color
+
+#nukeFlash
+	position: fixed
+	width: 100%
+	height: 100%
+	left: 0
+	top: 0
+	z-index: 10
+	background-color: white
+	opacity: 1
+	display: none
+
+#innerBody
+	padding: 2em
+
+#fontSizeSelect
+	float:right
+	font-size: 16px
+	position: relative
+	top: 5px
+	right: 5px
+	cursor: pointer
+	span
+		vertical-align: -25%
+		color: link_color
+		padding: 0 4px
+
+inputs_dark = #530
+#inputs
+	float: right
+	width: 50%
+	color: inputs_dark
+	input, select, button
+		color: inputs_dark
+		background-color: #eda
+
+
+//////////////////////////////////////////////// conclusion box
+
+#resultsTitle
+	clear: both
+	position: relative
+	margin-bottom: 0.3em
+	font-size: 200%
+
+#resultsWrapper
+	position: relative
+
+#conclusionZone
+	width: 90%
+	min-height: 100px
+	float: left
+	margin: 1em 0
+	padding: 1em
+	border: 1px solid #ffc
+	background-color: #334
+	.error
+		color: #f88
+	.reckoning
+		font-size: minor_heading_size
+	.explanation
+		float: right
+		padding-left: 2em
+		tr td:first-child
+			text-align: right
+			font-size: minor_heading_size
+			padding-right: .5em
+	.tableDate
+		vertical-align:top
+		text-align:right
+		width:8em
+
+#resultsWrapper
+	.scrollyCaption
+		float: left
+		height: 4em
+		width: 45%
+		text-align: center
+		margin: 0 1em
+	.scrolly
+		float: left
+		//max-height: 80%
+		height: 600px
+		width: 45%
+		overflow-y: auto
+		margin: 0 1em 0 0
+
+//////////////////////////////////////////////// verses and numbers
+
+////#numsScrolly
+////	overflow: auto
+
+.verse
+	margin: 0.5em
+	opacity: 1
+	background-color: #222
+	cursor: pointer
+	.verseTitleBar
+		background-color: #333
+		padding: 1px 4px
+		.verseTitleNum
+			float: right
+			font-size: 70%
+	&.selected
+		background-color: #462
+		.verseTitleBar
+			background-color: #693
+
+a.cite
+	color: #cfc
+	font-size: 70%
+	font-style: normal
+	cursor: default
+	&[href]
+		cursor: pointer
+
+// in verses and in the conclusion
+.verseText
+	padding: 4px 8px
+	font-family: georgia,serif
+	samp
+		font-family: georgia,serif
+	.numInVerse
+		font-weight: bold
+		color: #efe
+	
+//////////////////////////////////////////////// formulas
+
+#formulasScrolly
+	overflow-y: auto
+
+.formulaZone
+	margin: 0.5em
+	background-color: #222
+	cursor: pointer
+	.formula
+		font-size: 1.2em
+		padding: 1px 4px
+		background: #333
+	.inception, .target
+		padding: 4px 8px
+	&.selected
+		background-color: #642
+		.formula
+			background-color: #864
+		.inum
+			color: #ffe
+
+//////////////////////////////////////////////// prefs
+
+#prefsButton
+	color: link_color
+	cursor: pointer
+	text-decoration: underline
+
+#prefsFog
+	position: fixed
+	width: 100%
+	height: 100%
+	left: 0
+	top: 0
+	text-align: center
+	background: rgb(255, 255, 255)
+	background: rgba(255, 255, 255, .5)
+	display: none;
+	text-align: center
+	#prefsPanel
+		margin: 30% auto
+		width: 24em
+		padding: 1em
+		background: #730
+		border: #aaa 1px outset
