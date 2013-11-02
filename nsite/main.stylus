@@ -56,9 +56,6 @@ body
 
 inputs_dark = #530
 #inputs
-	float: right
-	width: 50%
-	color: inputs_dark
 	input, select, button
 		color: inputs_dark
 		background-color: #eda

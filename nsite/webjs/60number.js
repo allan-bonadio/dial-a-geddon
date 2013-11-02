@@ -175,6 +175,11 @@ NumCentral.crossLink = function() {
 	}
 
 
+	numbersView = new NumbersView();
+	
+	// backbone basically fucks this up.  Yeah I made a mistake somewhere.  
+	// Sometime before the next century Ill figure it out.
+	$('#numbersScrolly .verse').click(numbersView.clickVerse);
 }
 
 // called when a formula is selected, to make verses visible/invisible
@@ -209,6 +214,7 @@ NumCentral.prototype.selectAnyVerse = function sav() {
 }
 
 
+var numbersView;
 
 var NumbersView = Backbone.View.extend({
 	el: '#numbersScrolly',
@@ -230,6 +236,5 @@ var NumbersView = Backbone.View.extend({
 	}
 });
 
-var numbersView = new NumbersView();
 
 

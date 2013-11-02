@@ -21,7 +21,7 @@ function PivotalDate(raw) {
 	}
 	else {
 		this.significance = 'Armageddon';
-		this.cite = 'scroll up to change';
+		this.cite = 'as chosen';
 	}
 }
 
@@ -264,6 +264,17 @@ Formula.prototype = {
 
 }
 
+Formula.genFormulaContent = function(hits) {
+	var html = '';
+	for (var f = 0; f < hits.length; f++) {
+		var form = listOfFormulas[f] = new Formula(hits[f], f);
+		html += form.genFormZone(true, false);
+	}
+	
+	return html;
+}
+	
+	
 Formula.crossLink = function() {
 	// go thru all formulas
 	var formNodes = $('#formulasScrolly .formulaZone');
@@ -300,19 +311,9 @@ Formula.crossLink = function() {
 		var omegaCent = register(terms[1]);
 	}
 
+	formulasView = new FormulasView();
 }
 
-Formula.genFormulaContent = function(hits) {
-	var html = '';
-	for (var f = 0; f < hits.length; f++) {
-		var form = listOfFormulas[f] = new Formula(hits[f], f);
-		html += form.genFormZone(true, false);
-	}
-	
-	return html;
-}
-	
-	
 	
 // obsolete?  Now we show all formulas, and only the verses that go with the selected formula.
 // show/hide the formula zones based on what nums and verses are selected.
@@ -369,7 +370,7 @@ var FormulasView = Backbone.View.extend({
 	el: '#formulasScrolly',
 
 	events: {
-		"click .formulaZone": "click",
+		"click .formulaZone": "clickFormula",
 	},
 
 	render: function () {
@@ -377,7 +378,7 @@ var FormulasView = Backbone.View.extend({
 		return this;
 	},
 	
-	click: function(ev) {
+	clickFormula: function(ev) {
 		var node = ev.currentTarget;
 		if (node.formula.formZoneNode != node)
 			console.log("formula and formula node not attached");
@@ -385,4 +386,4 @@ var FormulasView = Backbone.View.extend({
 	}
 });
 
-var formulasView = new FormulasView();
+var formulasView;
