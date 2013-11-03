@@ -23,12 +23,16 @@
     "type": "git",
     "url": "https://github.com/allan-bonadio/dial-a-geddon"
   },
-  "devDependencies": {
-    "uglify-js": "*",
+  "dependencies": {
+    "stylus.js": "*",
     "hogan.js": "*"
+  },
+  "devDependencies": {
+    "uglify-js": "*"
   },
   "readmeFilename": "README.md",
   "bugs": {
     "url": "https://github.com/allan-bonadio/dial-a-geddon/issues"
   }
 }
+
