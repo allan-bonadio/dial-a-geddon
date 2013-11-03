@@ -5,9 +5,13 @@ runOnce ( )
 {
 	#trap runOnce 2
 	cat main.stylus | stylus > statics/main.css
-	
+
+	startTime=`date +%s`
 	node --debug app  --dev
 	#node --debug-brk app --dev
+	if [ "$startTime" = `date +%s` ]
+	then exit 1
+	fi
 	echo '|===|' `date +%T` "   Node return code is $?"
 	echo
 }
