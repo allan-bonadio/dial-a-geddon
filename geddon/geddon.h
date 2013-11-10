@@ -13,7 +13,8 @@
 #include <string.h>
 
 ///////////////////////////////////////// Y strings: char[YSTR_LEN]
-
+// a string long enough for all citations (1 corinthians 999:999) and lots of other useful strings,
+// but not a whole verse.
 #define YSTR_LEN  64
 typedef char Ystr[YSTR_LEN];
 extern void strYcpy(char* dest, const char* src, long count = (YSTR_LEN-1));

@@ -76,13 +76,13 @@ Ystr phdSignOfYear, phdYear, phdMonth, phdDate;
 static void breakUpHyphenatedDate(const Ystr str) {
 	*phdYear = *phdMonth = *phdDate = 0;
 	
-	char* firstHyphen = strchr(str, '-');
+	const char* firstHyphen = strchr(str, '-');
 	if (firstHyphen) {
 		if (firstHyphen-str > 31)
 			throw "date string implausibly long";
 		strYcpy(phdYear, str, firstHyphen-str);
 		
-		char* secondHyphen = strchr(firstHyphen + 1, '-');
+		const char* secondHyphen = strchr(firstHyphen + 1, '-');
 		
 		if (secondHyphen) {
 			// phdYear, phdMonth and phdDate
