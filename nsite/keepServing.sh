@@ -7,8 +7,9 @@ runOnce ( )
 	cat main.stylus | stylus > statics/main.css
 
 	startTime=`date +%s`
-	node --debug app  --dev
+	#node --debug app  --dev
 	#node --debug-brk app --dev
+	node --debug-brk app 
 	if [ "$startTime" = `date +%s` ]
 	then exit 1
 	fi
