@@ -74,6 +74,7 @@ function geddonCGI(queryString, onDone) {
 
 function serve() {
 	// ALL of the loads must be done for this to be done correctly, and once
+	// (honestly, what diff does it make?  while we're waiting, requests fail always instead of sometimes.)
 	http.createServer(function serv1(quest, ans) {
 	
 		// pictures and everything goes thru here, although the urls

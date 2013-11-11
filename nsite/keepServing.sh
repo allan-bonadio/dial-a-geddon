@@ -4,8 +4,8 @@ echo "double ^C to quit; single to refresh"
 runOnce ( )
 {
 	#trap runOnce 2
-	cat main.stylus | stylus > statics/main.css
 
+	# if we crash immediately, don't keep restarting!
 	startTime=`date +%s`
 	#node --debug app  --dev
 	#node --debug-brk app --dev
