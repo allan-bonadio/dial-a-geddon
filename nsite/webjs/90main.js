@@ -29,6 +29,7 @@ var Justification = Backbone.Model.extend({
 						return;
 					}
 				}
+				// if the length you get is NaN, often that means the geddon program isnt there
 				console.error("bad returned data of length %d, status %s", text, textStatus);
 				
 			})
