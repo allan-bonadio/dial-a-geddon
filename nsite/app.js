@@ -21,6 +21,9 @@ var util = require('util'),
 	staticFiles, jsFiles, webjs, totalHTML, 
 	partialsDone = false, jsDone = false;
 
+// we use a lot of pathnames relative to here
+process.chdir(__dirname);
+
 // some fatal error in this file
 function serverBomb(err) {
 	if (typeof err == 'string')
@@ -132,7 +135,7 @@ function loadWholeDirectory(dirName, dictToAddTo, uponDone, uponReload) {
 		// the dictToAddTo has been initialized by our caller; 
 		// can't do it in here cuz it's got to hold return value.
 
-		// .DS_Store
+		// .DS_Store and others - skip over of course
 		while (fileNames[0][0] == '.')
 			fileNames.shift();
 		var starts = fileNames.length;
@@ -238,7 +241,7 @@ function compileStylus() {
 			if (er)
 				serverBomb(er);
 			staticFiles['main.css'] = css;  // never an actual file but we pretend
-			console.log("Loaded main.stylus");
+			console.log("Loaded & Compiled main.stylus");
 		});
 	});
 }
