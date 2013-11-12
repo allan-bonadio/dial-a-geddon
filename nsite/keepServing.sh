@@ -10,9 +10,10 @@ runOnce ( )
 	
 	# --dev sets app to include js old fashioned way, instead of inline
 	# --debug works with node-inspector --debug-brk causes stop at first stmt
-	#node --debug app  --dev
+	# just do a node-inspector & somewhere.
+	node --debug app  --dev
 	#node --debug-brk app --dev
-	node --debug-brk app 
+	#node --debug-brk app 
 	
 	if [ "$startTime" = `date +%s` ]
 	then exit 1

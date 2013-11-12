@@ -120,10 +120,13 @@ inputs_dark = #530
 	cursor: pointer
 	.verseTitleBar
 		background-color: #333
-		padding: 1px 4px
+		padding: .4em .6em 0
+		.cite
+			display: block
+			float: left
 		.verseTitleNum
-			float: right
 			font-size: 70%
+			float: right
 	&.selected
 		background-color: #462
 		.verseTitleBar
@@ -157,8 +160,8 @@ a.cite
 	background-color: #222
 	cursor: pointer
 	.formula
-		font-size: 1.2em
-		padding: 1px 4px
+		font-size: 70%
+		padding: .4em 0.6em .5em
 		background: #333
 	.inception, .target
 		padding: 4px 8px
