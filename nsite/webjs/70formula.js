@@ -21,7 +21,7 @@ function PivotalDate(raw) {
 	}
 	else {
 		this.significance = 'Armageddon';
-		this.cite = 'as chosen';
+		this.cite = '';
 	}
 }
 
