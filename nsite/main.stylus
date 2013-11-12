@@ -99,13 +99,13 @@ inputs_dark = #530
 #resultsWrapper
 	.scrollyCaption
 		float: left
-		height: 4em
+		height: 5em
 		width: 45%
-		text-align: center
-		margin: 0 1em
+		text-align: left
+		vertical-align: bottom
+		margin: 0 1em 0 0
 	.scrolly
 		float: left
-		//max-height: 80%
 		height: 600px
 		width: 45%
 		overflow-y: auto
@@ -113,11 +113,8 @@ inputs_dark = #530
 
 //////////////////////////////////////////////// verses and numbers
 
-////#numsScrolly
-////	overflow: auto
-
 .verse
-	margin: 0.5em
+	margin: 0.5em 0
 	opacity: 1
 	background-color: #222
 	cursor: pointer
