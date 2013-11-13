@@ -1,12 +1,13 @@
+geddon.xcodeproj
+geddon
 JamesDigitized.txt
 JamesFiltered.txt
 KingJamesBible.txt
 crunchJames.sh
 grabCitations.php
 genCitations.h
-gc.h
 imgMisc
-install.sh
-jd.txt
 pix
 .DS_Store
+numbers1.txt
+numbers2.txt
