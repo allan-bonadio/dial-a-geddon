@@ -107,19 +107,19 @@ void setupNumbers(void) {
 	
 #if 0
 	// dump out ALL the number refs, just for a look.
-	printf("\nSmall:\n");
+	printf("\n    smallNumberIndex:\n");
 	for (int n = 0; n < HIGHEST_BIBLE_SMALL; n++) {
 		for (Number *num = smallNumberIndex[n]; num; num = (Number *) num->nextSame)
-			printf("%ld: %s: %s\n", num->number, num->verse, num->description);
+			printf("%d: %s: %s\n", num->number, num->verse, num->description);
 	}
-	printf("\n\nLarge:\n");
+	printf("\n\n   largeNumberIndex:\n");
 	for (int nn = 0; nn < HIGHEST_BIBLE_HUNDRED; nn++)	{
 		for (Number *num = largeNumberIndex[nn]; num; num = (Number *) num->nextSame)
-			printf("%ld: %s: %s\n", num->number, num->verse, num->description);
+			printf("%d: %s: %s\n", num->number, num->verse, num->description);
 	}
-	printf("\n\nHuge:\n");
+	printf("\n\n   hugeNumberIndex:\n");
 	for (Number *num = hugeNumberIndex; num; num = (Number *) num->nextSame)
-		printf("%ld: %s: %s\n", num->number, num->verse, num->description);
+		printf("%d: %s: %s\n", num->number, num->verse, num->description);
 	
 	
 #endif
@@ -133,8 +133,8 @@ void setupNumbers(void) {
 
 
 lookupCallbackType lookupCallback = clarifyForRange;
-long lookupStart;
-long lookupEnd;
+int lookupStart;
+int lookupEnd;
 bool lookupUnique, lookupContinue;
 
 static void lookupRunCallback(Number *num) {
@@ -154,8 +154,11 @@ static void lookupSmallNumberRange(void) {
 }
 // given this pair of numbers n, a range, possibly zero width, look it up and call the callback once for each instance
 static void lookupLargeNumberRange(void) {
-	// throughout the whole range, by 100s
-	for (long nn = MAX(lookupStart / 100, 10); nn <= (lookupEnd + 99) / 100; nn++) {
+	// throughout the whole range, by 100s, but only 'large' territory
+	int lStart = MAX(lookupStart, HIGHEST_BIBLE_SMALL) / 100;
+	int lEnd = MIN(lookupEnd + 99, HIGHEST_BIBLE_LARGE) / 100;
+	for (long nn = lStart;
+			nn <= lEnd; nn++) {
 		// in this case, each linked list has different numbers, all within that century so we have to filter for exact matches
 		for (Number *num = largeNumberIndex[nn]; num && lookupContinue; num = (Number *) num->nextSame)
 			if (num->number >= lookupStart && num->number <= lookupEnd)
@@ -187,8 +190,9 @@ void lookupNumberRange(int nStart, int nEnd, bool unique, lookupCallbackType cal
 	lookupUnique = unique;
 	lookupContinue = true;
 	
-	// only lookup what might be true.  Note these are not equivalent 
-	// relations!  pay attention to nStart & lookupEnd
+	// only lookup what might be true - possibly looking up in all 3 tables.
+	// Note these are NOT EQUIVALENT relations!
+	// pay attention to lookupStart & lookupEnd
 	if (lookupStart < HIGHEST_BIBLE_SMALL)
 		lookupSmallNumberRange();
 	if (lookupEnd >= HIGHEST_BIBLE_LARGE)

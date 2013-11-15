@@ -38,7 +38,7 @@ static void testCollect(void) {
 	assertEqual(collectToSdn(1990, 1, 1), 2447893., 
 				"collectToSdn(1990, 5, 1) == 2447893", 
 				"SDN 2447893 is January 1, 1990.");
-    
+	
 	assertEqual(collectToSdn(2999, 1, 1), 2816423, 
 				"collectToSdn(2999, 1, 1) == 2816423", 
 				"SDN 2816423 is Jan 1, 2999 AD");
@@ -71,14 +71,14 @@ static void testParse(void) {//// 	assertEqual\(start = parseToSdn\("([-0-9]*)",
 	assertEqual(start, end, 
 				"start==end", 
 				"SDN 2816423 is January 1, 2999");
-    
+	
 	parseToSdn("1970-1-1", &start, &end);assertEqual(start, 2440588, 
 				"parseToSdn(1970-1-1) == 2440588", 
 				"SDN 2440588 is January 1, 1970.");
 	assertEqual(start, end, 
 				"start==end", 
 				"SDN 2440588 is January 1, 1970.");
-    
+	
 	parseToSdn("1582-1-1", &start, &end);assertEqual(start, 2298884, 
 													  "parseToSdn(1582-1-1) == 2298884", 
 													  "SDN 2298884 is January 1, 1582.");

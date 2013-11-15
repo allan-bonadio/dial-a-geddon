@@ -1,3 +1,8 @@
+//// @media screen and (min-width: 7500px)
+
+
+
+
 body_text_color = #ffc
 link_color = #ff0
 dark_link_color = #880
@@ -60,6 +65,10 @@ inputs_dark = #530
 		color: inputs_dark
 		background-color: #eda
 
+#inputDirections
+	@media screen and (min-width: 7500px)
+		// make the text stack above the controls on a small screen
+		float:right
 
 //////////////////////////////////////////////// conclusion box
 

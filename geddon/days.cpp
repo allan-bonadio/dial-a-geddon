@@ -18,7 +18,7 @@
 // eliminate irreleveant chars like spaces
 void strYcpy(char* dest, const char* src, long count) {
 	const char *p;
-    char *q;
+	char *q;
 	for (p = src, q = dest; *p && p < src+31 && p < src+count; p++) {
 		if (! isspace(*p))
 			*q++ = toascii(*p);
@@ -86,10 +86,10 @@ static void breakUpHyphenatedDate(const Ystr str) {
 		
 		if (secondHyphen) {
 			// phdYear, phdMonth and phdDate
-            strYcpy(phdMonth, (firstHyphen+1), (secondHyphen-firstHyphen) - 1);
+			strYcpy(phdMonth, (firstHyphen+1), (secondHyphen-firstHyphen) - 1);
 			strYcpy(phdDate, secondHyphen+1);
 		}
-		else {
+		else {		
 			// just phdYear and phdMonth
 			strYcpy(phdMonth, firstHyphen+1);
 		}

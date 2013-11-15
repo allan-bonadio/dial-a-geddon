@@ -76,9 +76,8 @@ public:
 #define HIGHEST_BIBLE_SMALL 1000
 extern Number *smallNumberIndex[HIGHEST_BIBLE_SMALL];
 #define HIGHEST_BIBLE_HUNDRED 4001
-//#define HIGHEST_BIBLE_LARGE// (HIGHEST_BIBLE_HUNDRED * 100.)
 #define HIGHEST_BIBLE_LARGE (HIGHEST_BIBLE_HUNDRED * 100)
-extern Number *largeNumberIndex[HIGHEST_BIBLE_HUNDRED];
+extern Number *largeNumberIndex[HIGHEST_BIBLE_HUNDRED];  // lowest ten are unused as small table does those
 extern Number *hugeNumberIndex;
 
 extern void setupNumbers(void);

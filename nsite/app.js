@@ -35,9 +35,17 @@ function serverBomb(err) {
 
 ////////////////////////////////////////////////////// serving
 
+
 // send out this request, easy
 function sendIt(ans, bytes, mime) {
-	ans.writeHead(200, {'Content-Type': mime});
+	var headers = {
+		'Content-Type': mime, 
+	};
+	
+	////if (productionMode)
+		headers['Cache-Control'] = 'max-age=86400';   // please re-fetch after 1 day
+	
+	ans.writeHead(200, headers);
 	ans.end(bytes);
 	console.log("sent "+ mime);
 }

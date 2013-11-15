@@ -31,8 +31,7 @@
 
 #include "sdncal.h"
 
-int DayOfWeek(
-                int sdn)
+int DayOfWeek(int sdn)
 {
 	int dow;
 

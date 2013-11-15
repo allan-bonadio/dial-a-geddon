@@ -52,9 +52,6 @@ Number productionBibleNumbers[] = {
 	Number(50, 100000000, "Number of Jubilee", "Biblical Numerology"),
 	//Number(51, 100000000, "Number of Books in the Old + New Testaments", "Bible"),
 	//Number(65, 100000000, "Years it takes for Ephraim to be broken", "Isaiah 7:8)"),
-	//Number(70, 100000000, "Nations that Populated the Earth", "Genesis 10"),
-	Number(40, 100000000, "Number of Probation or Trial", "Biblical Numerology"),
-
 
 	// here's the real thing: 4000 someodd citations, gotten by script conversion from the KJV itself
 	#include "../genCitations.h"

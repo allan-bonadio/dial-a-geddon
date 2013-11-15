@@ -10,6 +10,7 @@
 #include "geddon.h"
 #include <math.h>
 #include <time.h>
+#include <assert.h>
 #include <sys/resource.h>
 
 
@@ -370,6 +371,9 @@ static void usage(char* argv0) {
 
 int main (int argc, char * const argv[], char * const environment[]) {
 	struct rusage startTime, endTime; // for benchmarking
+	
+	assert(sizeof(int) == 4);
+	assert(sizeof(long) == 8);
 
 	try {
 		
