@@ -1,0 +1,74 @@
+<!-- works on all browsers -->
+
+<script src=webjs/10jquery.js></script>
+<style>
+	input, button { font-size: 18px;}
+	#iwrapper { text-align: center; }
+	#iwrapper div { margin: auto; }
+	/*#panel { float:left; }*/
+</style>
+
+
+<table id=panel>
+	<tr><td>
+		<input id=width value=320 size=5><input id=height value=480 size=5>
+	<td>
+		<button id=240x320 type=button >240x320</button>
+	<td>
+		<button id=320x480 type=button >320x480</button>
+	<td>
+		<button id=480x640 type=button >480x640</button>
+	<td>
+		<button id=600x800 type=button >600x800</button>
+	<td>
+		<button id=640x960 type=button >640x960</button>
+	<td>
+		<button id=768x1024 type=button >768x1024</button>
+	
+	<tr><td style=text-align:center>
+		<button id=custom type=button >Resize </button>
+	<td>
+		<button id=320x240 type=button >320x240</button>
+	<td>
+		<button id=480x320 type=button >480x320</button>
+	<td>
+		<button id=640x480 type=button >640x480</button>
+	<td>
+		<button id=800x600 type=button >800x600</button>
+	<td>
+		<button id=960x640 type=button >960x640</button>
+	<td>
+		<button id=1024x768 type=button >1024x768</button>
+</table>
+
+<div id=iwrapper>
+	<div>
+	click to make frame
+	</div>
+</div>
+
+<script>
+
+function setSize(w, h) {
+	var html = '<iframe width='+ w +' height='+ h +
+			' src=http://localhost:8124 ></iframe>\n';
+	$('#iwrapper div').html(html);
+	$('#width').val(w);
+	$('#height').val(h);
+
+}
+
+jQuery(function() {
+	$('button').click(function(ev) {
+		var m = this.id.match(/(\d+)x(\d+)/);
+		if (!m)
+			setSize($('#width').val(), $('#height').val());
+		else
+			setSize(m[1], m[2]);
+	});
+	
+	
+	
+});
+
+</script>
