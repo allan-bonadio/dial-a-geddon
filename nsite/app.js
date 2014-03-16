@@ -19,7 +19,8 @@ var util = require('util'),
 	child_process = require('child_process'),
 	templateFiles = {}, templatePartials, 
 	staticFiles, jsFiles, webjs, totalHTML, 
-	partialsDone = false, jsDone = false;
+	partialsDone = false, jsDone = false,
+	httpPort = 8201;
 
 // we use a lot of pathnames relative to here
 process.chdir(__dirname);
@@ -28,8 +29,10 @@ process.chdir(__dirname);
 function serverBomb(err) {
 	if (typeof err == 'string')
 		console.error(err);
-	else
+	else {
+		console.error("%s: %s", err.name || '', err.message || '');
 		console.dir(err);
+	}
 	process.exit(9);
 }
 
@@ -113,9 +116,9 @@ function serve() {
 			ans.writeHead(404, {'Content-Type': 'text/html'});
 			ans.end(fName +' not found');
 		}
-	}).listen(8124);
+	}).listen(httpPort);
 
-	console.log('Server running at http://localhost:8124/');
+	console.log('Server running at http://localhost:'+ httpPort +'/');
 }
 
 ////////////////////////////////////////////////////// preloading
