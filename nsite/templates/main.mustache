@@ -8,13 +8,15 @@
 <body>
 	<div id=nukeFlash></div>
 	
+	{{! <div id=fontSizeTrick></div> }}
+	
 	{{! the font size selector, near the top for those who can't see well.
 		Must be OUTSIDE the inner body cuz its margins are in ems }}
 	<div id=fontSizeSelect title='To make the text larger or smaller, click here'>
 	<script>
-		[10, 13, 16, 20, 24, 30].forEach(function(fs) {
+		[6, 8, 10, 13, 16, 20].forEach(function(fs) {
 			document.writeln("<span id=fs"+ fs +" onclick='setFontSize("+ 
-				fs +")' style='font-size:"+ fs +"px;' >A</span>");
+				fs +")' style='font-size:"+ (fs*0.1) +"em;' >A</span>");
 		});
 	</script>
 	</div>
@@ -23,8 +25,8 @@
 		{{> intro.mustache}}
 		{{> input.mustache}}
 		{{> results.mustache}}
-		{{> prefs.mustache}}
 		{{> footer.mustache}}
+		{{> prefs.mustache}}
 	</div>
 
 	{{! include all the client side javascript, either directly or a bunch of <script tags }}
