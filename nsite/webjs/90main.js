@@ -21,6 +21,7 @@ var Justification = Backbone.Model.extend({
 				////console.log(transport.status + text);
 				var a = text.split('<matches>');
 				if (a.length > 1) {
+					console.log("trimmed start");
 					var b = a[1].split('</matches>');
 					if (b.length > 1) {
 						console.info("got it successfully");
@@ -29,8 +30,9 @@ var Justification = Backbone.Model.extend({
 						return;
 					}
 				}
+
 				// if the length you get is NaN, often that means the geddon program isnt there
-				console.error("bad returned data of length %d, status %s", text, textStatus);
+				console.error("bad returned data of length %d, status %s", text.length, textStatus);
 				
 			})
 			.fail(function(jqXHR, textStatus, errorThrown) {
@@ -139,15 +141,15 @@ jQuery(function() {
 
 $(document).ready(function ()
 {
-    var NavigationRouter = Backbone.Router.extend({
+	var NavigationRouter = Backbone.Router.extend({
 
-        routes: {
-            "*actions": "startup"
-        },
-        
-        // 'create' the page by putting current page number in the title
-        startup: function sp(targetDate)
-        {
+		routes: {
+			"*actions": "startup"
+		},
+		
+		// 'create' the page by putting current page number in the title
+		startup: function sp(targetDate)
+		{
 			// set the default target to be like 6 months in the future or so
 			var now = new Date();
 			var then = new Date(now.getTime() + 2e10);
@@ -157,14 +159,14 @@ $(document).ready(function ()
 			////inputView.dateChange();
 			
 			pickUpPrefs();
-          
+		  
 			////$('#innerBody').append('nav showpage<br>');
 			
-        },
-        
-    });
+		},
+		
+	});
 
-    var navigationRouter = new NavigationRouter;
-    Backbone.history.start({root: '/'});
+	var navigationRouter = new NavigationRouter;
+	Backbone.history.start({root: '/'});
 });
 
