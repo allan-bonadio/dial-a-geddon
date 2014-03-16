@@ -9,6 +9,7 @@ objects = citations.o days.o find_hit.o main.o tests.o dow.o gregor.o julian.o
 
 geddon : $(objects)
 	g++ $(objects) -o geddon
+	cp geddon ../nsite
 
 %.o : %.c
 	gcc -c $(CFLAGS) $< -o $@
