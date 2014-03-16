@@ -105,9 +105,9 @@ function setCookie(name, value) {
 	document.cookie = name +'='+ value +'; expire=' + ex.toUTCString();
 }
 
-//  set the global font size to fs pixels
+//  set the global font size to fs /10 ems
 function setFontSize(fs) {
-	$(document.body).css('font-size', fs + 'px');
+	$(document.body).css('font-size', (fs*0.1) + 'em');
 	$('#fontSizeSelect span').css('background-color', '')
 	$('#fontSizeSelect span#fs' + fs).css('background-color', '#666')
 	
@@ -170,3 +170,13 @@ $(document).ready(function ()
 	Backbone.history.start({root: '/'});
 });
 
+////////////////////////////////////////////////// stars
+
+var pos = 0;
+
+setInterval(function() {
+	pos++;
+	if (pos >= 70000)
+		pos -= 70000;
+	document.body.style.backgroundPosition = pos + 'px '+ pos + 'px';
+}, 100);
