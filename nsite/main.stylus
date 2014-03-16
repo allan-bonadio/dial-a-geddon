@@ -23,15 +23,39 @@ input, select, button, a
 	&:focus
 		outline-color: link_color
 
-////////////////////////////////////////////// specific
+li
+	list-style: none  // why does chrome fumble this?!
+
+
+@media screen and (max-width: 480px)
+	.rambling
+		display: none
+@media screen and (min-width: 481px)
+	.brief
+		display: none
+
+// wait, i think i dont need this
+////#fontSizeTrick
+////	height: 0
+////	width: 16px  // for old browsers
+////	width: 1rem  // root font ems for new browsers
+////	
+////html
+////	font-size: 16px
+////	@media: screen and (max-resolution: 72dpi)
+////		font-size: 12px
+////	@media: screen and (min-resolution: 300dpi)
+////		font-size: 8px
 
 body
 	margin: 0
 	padding: 0
 	font-family: verdana,helvetica,sans-serif
-	font-size: 100%
+	font-size: 1em   // its all based on the default font size which I assume is good
 	background: url(stars6bg.png) black
 	color: body_text_color
+
+////////////////////////////////////////////// specific
 
 #nukeFlash
 	position: fixed
@@ -58,18 +82,91 @@ body
 		vertical-align: -25%
 		color: link_color
 		padding: 0 4px
+	@media screen and (max-width: 480px)
+		display: none
 
-inputs_dark = #530
+// hey! make this variable do it!! imgTitleThresh = 
+// maybe there's no way
+
+#imgTitleSmall
+	margin: 1em auto
+	width: 100%
+	display: none
+	@media screen and (max-width: 800px)
+		display: inline
+
+#imgTitleLarge
+	margin: 1em auto
+	@media screen and (max-width: 800px)
+		display: none
+
+#introBlock
+	text-align: center
+	padding: 1em
+	////@media screen and (max-width: 480px)
+	////	padding: 3px
+
+.introCopy
+	width:90%
+	margin: 0 auto
+	text-align: left
+	&.Medium
+		display: none
+	&.Small
+		display: none
+	@media screen and (max-width: 700px)
+		&.Large
+			display: none
+		&.Medium
+			display: block
+	@media screen and (max-width: 400px)
+		&.Medium
+			display: none
+		&.Small
+			display: block
+
+
+.inputInstr
+	&.Small
+		display: none
+	&.Large
+		margin-bottom: 1em
+#inputWrapper
+	float: right
+	padding-left: 1em
+@media screen and (max-width: 640px)
+	.inputInstr
+		&.Small
+			margin-bottom: 2em
+			display: block
+		&.Large
+			display: none
+	#inputWrapper
+		float: none
+		padding-left: 1em
+		margin: 0 auto
+
+
+#inputScroll
+	height: 19.5em
+	width: 23.5em
+	z-index:-9
+	margin-top: 1em
+
+inputs_ink = #530
 #inputs
+	position: relative
+	table
+		position:absolute
+		color: #530
+		left: 4em
+		top: 4em
 	input, select, button
-		color: inputs_dark
+		color: inputs_ink
 		background-color: #eda
 
-#inputDirections
-	@media screen and (min-width: 7500px)
-		// make the text stack above the controls on a small screen
-		float:right
 
+	
 //////////////////////////////////////////////// conclusion box
 
 #resultsTitle
@@ -205,3 +302,7 @@ a.cite
 		padding: 1em
 		background: #730
 		border: #aaa 1px outset
+
+////# FSI
+////	@media screen and (min-width: 50em)
+////		display: none
