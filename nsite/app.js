@@ -19,7 +19,8 @@ var util = require('util'),
 	child_process = require('child_process'),
 	templateFiles = {}, templatePartials, 
 	staticFiles, jsFiles, webjs, totalHTML, 
-	partialsDone = false, jsDone = false;
+	partialsDone = false, jsDone = false,
+	httpPort = 8201;
 
 // we use a lot of pathnames relative to here
 process.chdir(__dirname);
@@ -28,18 +29,27 @@ process.chdir(__dirname);
 function serverBomb(err) {
 	if (typeof err == 'string')
 		console.error(err);
-	else
+	else {
+		console.error("%s: %s", err.name || '', err.message || '');
 		console.dir(err);
+	}
 	process.exit(9);
 }
 
 ////////////////////////////////////////////////////// serving
 
-// send out this request, easy
+// send out this request, easy.  bytes = a string (utf8) or a buffer (bin, images)
 function sendIt(ans, bytes, mime) {
-	ans.writeHead(200, {'Content-Type': mime});
-	ans.end(bytes);
-	console.log("sent "+ mime);
+	var headers = {
+		'Content-Type': mime, 
+	};
+	
+	////if (productionMode)
+		headers['Cache-Control'] = 'max-age=86400';   // please re-fetch after 1 day
+	
+	ans.writeHead(200, headers);
+	ans.end(bytes, 'binary');
+	console.log("sent %s type file, %s bytes", mime, bytes && bytes.length || 'no bytes?');
 }
 
 var suffixToMime = {
@@ -105,9 +115,9 @@ function serve() {
 			ans.writeHead(404, {'Content-Type': 'text/html'});
 			ans.end(fName +' not found');
 		}
-	}).listen(8124);
+	}).listen(httpPort);
 
-	console.log('Server running at http://localhost:8124/');
+	console.log('Server running at http://localhost:'+ httpPort +'/');
 }
 
 ////////////////////////////////////////////////////// preloading
@@ -124,6 +134,23 @@ function maybeServe(p, j) {
 	completePreloads();
 
 	serve();
+}
+
+function loadAFile(fileName, filePath, dictToAddTo, callback) {
+	// binary or text?
+	var options = fileName.search(/\.(png|gif|ico|jpg)$/i) >= 0 ? {} : {encoding: 'utf8'};
+	console.log("fn: (%s)  searchres: %j %j %j", fileName, fileName.search(/\.(png|gif|ico|jpg)$/i), fileName.search(/\.(png|gif|ico|jpg)$/i) >= 0, options);////
+	
+	fs.readFile(filePath, options, function reread(er, bytes) {
+		if (er)
+			serverBomb("error reloading: %s: %j", fileName, er);
+		dictToAddTo[fileName] = bytes;  // a string OR a buffer if a binary file
+		console.log("%s: loaded %s, %d bytes, text? %j", (new Date()).toLocaleTimeString(), fileName, bytes.length, options);
+
+		if (callback)
+			callback(fileName);
+
+	});
 }
 
 // given a directory name in same dir as this file, read in all files in that dir.
@@ -143,29 +170,26 @@ function loadWholeDirectory(dirName, dictToAddTo, uponDone, uponReload) {
 		fileNames.forEach(function aName(fileName) {
 			var filePath = dirName +'/'+ fileName;
 
-			fs.readFile(filePath, function itsBytes(er, bytes) {
-				// read-one-file callback.
-				// each one completes at random, just make sure you got them all
-				if (er)
-					serverBomb(er);
-				dictToAddTo[fileName] = bytes;
-				console.log("Loaded %s", fileName);
-				if (--starts <= 0 && uponDone)
-					uponDone(dictToAddTo);
-			});
+			loadAFile(fileName, filePath, dictToAddTo, function(fn) {
+					if (--starts <= 0 && uponDone)
+						uponDone(fn);
+				});
+			////fs.readFile(filePath, function itsBytes(er, bytes) {
+			////	// read-one-file callback.
+			////	// each one completes at random, just make sure you got them all
+			////	if (er)
+			////		serverBomb(er);
+			////	dictToAddTo[fileName] = bytes;
+			////	console.log("Loaded %s, %d bytes", fileName, bytes.length);
+			////	if (--starts <= 0 && uponDone)
+			////		uponDone(dictToAddTo);
+			////});
 			
 			// now, set a watch on that file to update it if it changes, if i'm debugging
 			if (! productionMode) {
 				// ignore event and fName; docs say theyre unreliable
 				fs.watch(filePath, function catchAChange(event, fName) {
-					fs.readFile(filePath, function reread(er, bytes) {
-						if (er)
-							serverBomb("error reloading: %s: %j", fileName, er);
-						dictToAddTo[fileName] = bytes;
-						console.log("re-loaded %s", (new Date()).toLocaleTimeString(), fileName);
-						if (uponReload)
-							uponReload(fileName);
-					});
+					loadAFile(fileName, filePath, dictToAddTo, uponReload);
 				});
 			}
 			
@@ -233,7 +257,7 @@ function preloadJS() {
 
 // one file, but the language is cool
 function compileStylus() {
-	fs.readFile('main.stylus', function readStylus(er, bytes) {
+	fs.readFile('main.stylus', {encoding: 'utf8'}, function readStylus(er, bytes) {
 		if (er)
 			serverBomb(er);
 			
