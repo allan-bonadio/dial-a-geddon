@@ -39,7 +39,7 @@ function serverBomb(err) {
 ////////////////////////////////////////////////////// serving
 
 // send out this request, easy.  bytes = a string (utf8) or a buffer (bin, images)
-function sendIt(ans, bytes, mime) {
+function sendIt(reply, bytes, mime, fName) {
 	var headers = {
 		'Content-Type': mime, 
 	};
@@ -47,9 +47,10 @@ function sendIt(ans, bytes, mime) {
 	////if (productionMode)
 		headers['Cache-Control'] = 'max-age=86400';   // please re-fetch after 1 day
 	
-	ans.writeHead(200, headers);
-	ans.end(bytes, 'binary');
-	console.log("sent %s type file, %s bytes", mime, bytes && bytes.length || 'no bytes?');
+	reply.writeHead(200, headers);
+	reply.write(bytes, 'binary');
+	reply.end();
+	console.log("sent '%s', %s type file, %s bytes", fName, mime, bytes && bytes.length || 'no bytes?');
 }
 
 var suffixToMime = {
@@ -88,7 +89,7 @@ function geddonCGI(queryString, onDone) {
 function serve() {
 	// ALL of the loads must be done for this to be done correctly, and once
 	// (honestly, what diff does it make?  while we're waiting, requests fail always instead of sometimes.)
-	http.createServer(function serv1(quest, ans) {
+	http.createServer(function serv1(quest, reply) {
 	
 		// pictures and everything goes thru here, although the urls
 		// don't have the directory names we keep them under.  Works anyway.
@@ -96,24 +97,24 @@ function serve() {
 		var suffix = fName.replace(/^.*\./, '');
 		if (fName == '') {
 			// THE main page itself
-			sendIt(ans, totalHTML, 'text/html');
+			sendIt(reply, totalHTML, 'text/html', fName);
 		}
 		else if (suffixToMime[suffix])
-			sendIt(ans, staticFiles[fName], suffixToMime[suffix]);
+			sendIt(reply, staticFiles[fName], suffixToMime[suffix], fName);
 		else if (suffix == 'js')
-			sendIt(ans, jsFiles[fName], 'application/javascript');
+			sendIt(reply, jsFiles[fName], 'application/javascript', fName);
 		else if (/^geddon\?/.test(fName)) {
 			// pretend to cgi  start with this
 			geddonCGI(fName.split('?')[1], function onDone(out, err) {
 				if (err)
-					ans.end(err);
+					reply.end(err);
 				else
-					ans.end(out);
+					reply.end(out);
 			});
 		}
 		else {
-			ans.writeHead(404, {'Content-Type': 'text/html'});
-			ans.end(fName +' not found');
+			reply.writeHead(404, {'Content-Type': 'text/html'});
+			reply.end(fName +' not found');
 		}
 	}).listen(httpPort);
 
@@ -139,7 +140,9 @@ function maybeServe(p, j) {
 function loadAFile(fileName, filePath, dictToAddTo, callback) {
 	// binary or text?
 	var options = fileName.search(/\.(png|gif|ico|jpg)$/i) >= 0 ? {} : {encoding: 'utf8'};
-	console.log("fn: (%s)  searchres: %j %j %j", fileName, fileName.search(/\.(png|gif|ico|jpg)$/i), fileName.search(/\.(png|gif|ico|jpg)$/i) >= 0, options);////
+	console.log("fn: (%s)  searchres: %j %j %j", fileName, 
+		fileName.search(/\.(png|gif|ico|jpg)$/i), 
+		fileName.search(/\.(png|gif|ico|jpg)$/i) >= 0, options);////
 	
 	fs.readFile(filePath, options, function reread(er, bytes) {
 		if (er)
