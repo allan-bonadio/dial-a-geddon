@@ -23,8 +23,8 @@ input, select, button, a
 	&:focus
 		outline-color: link_color
 
-li
-	list-style: none  // why does chrome fumble this?!
+//li
+//	list-style: none  // why does chrome fumble this?!
 
 
 @media screen and (max-width: 480px)
