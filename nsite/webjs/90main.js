@@ -53,34 +53,12 @@ var justification = new Justification();
 var InputView = Backbone.View.extend({
 	el: '#inputs',
 	events: {
-		////"change #year, #month, #date": "dateChange",
 		"click #justify": "justify"
 	},
 	
-////	// change of date by user
-////	dateChange: function dateChange() {
-////		var da = $('#date').val();
-////		if (Number(da) != da)
-////			da = '';
-////		
-////		var mo = $('#month').val();
-////		if (Number(mo) != mo)
-////			mo = da = '';
-////		else {
-////			mo =  mo < 3 ? Number(mo) + 10 : Number(mo) - 2;
-////			////mo = $('#month').item(mo).innerHTML;
-////		}
-	
-		//// this is just wrong $('resultsFor').innerHTML = da +' '+ mo +' '+ Math.round($('year').value);
-////	},
-
-	// called when human clicks Justify button
+	// called when human clicks Scriptures button
 	justify: function() {
 		justification.fetch({year: $('#year').val(), month: $('#month').val(), date: $('#date').val()});
-		
-		//for now...justification.fetch({year: $('#year').val(), month: $('#month').val(), date: $('#date').val()})
-
-		////genResultsTemp();
 	},
 
 	render: function()
@@ -91,6 +69,25 @@ var InputView = Backbone.View.extend({
 
 var inputView = new InputView();
 
+
+////////////////////////////////////////////////// stars sliding
+
+var StarSlidingPos = 0, StarSlidingInterval = 0;
+
+function startStarSliding() {
+	StarSlidingInterval = setInterval(function() {
+		StarSlidingPos++;
+		if (StarSlidingPos >= 7000)
+			StarSlidingPos -= 7000;
+		document.body.style.backgroundPosition = StarSlidingPos + 'px '+ StarSlidingPos + 'px';
+	}, 100);
+}
+
+function endStarSliding() {
+	if (StarSlidingInterval)
+		clearInterval(StarSlidingInterval);
+	StarSlidingInterval = 0;
+}
 
 
 
@@ -114,13 +111,23 @@ function setFontSize(fs) {
 	setCookie("geddonFontSize", fs);
 }
 
+// effect changes in the cutitout checkbox
+function pickUpStars() {
+		console.log("cut it out; "+ $('#cutItOut')[0].checked);
+		if ($('#cutItOut')[0].checked)
+			endStarSliding();
+		else
+			startStarSliding();
+}
+
 // pick up the prefs on startup from the cookies, copy to the prefs panel etc
 // called on page startup
 function pickUpPrefs() {
 	var f = document.cookie.match(/^.*geddonFormulasLimit=(\d+);.*$/);
-	$('#formulasLimit').value = f ? f[1] : 30;
+	$('#formulasLimit').val(f ? f[1] : 30);
 	
 	$('#cutItOut').attr('checked', document.cookie.indexOf('geddonCutItOut=true') >= 0);
+	pickUpStars();
 	
 	var m = document.cookie.match(/geddonFontSize=(\d+)/);
 	setFontSize(m ? m[1] : 16);
@@ -133,6 +140,13 @@ jQuery(function() {
  	});
  	$('#prefsButton').click(function() {
 		$('#prefsFog').show();
+ 	});
+ 	$('#prefsPanel').click(function(ev) {
+		ev.stopPropagation();  // or else clicks submit!
+ 	});
+ 	$('#cutItOut').change(function() {
+ 		setCookie("geddonCutItOut", $("#cutItOut")[0].checked);
+		pickUpStars();
  	});
  });
  
@@ -170,13 +184,3 @@ $(document).ready(function ()
 	Backbone.history.start({root: '/'});
 });
 
-////////////////////////////////////////////////// stars
-
-var pos = 0;
-
-setInterval(function() {
-	pos++;
-	if (pos >= 70000)
-		pos -= 70000;
-	document.body.style.backgroundPosition = pos + 'px '+ pos + 'px';
-}, 100);

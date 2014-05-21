@@ -69,7 +69,7 @@ body
 	display: none
 
 #innerBody
-	padding: 2em
+	padding: 2em .5em
 
 #fontSizeSelect
 	float:right
@@ -153,17 +153,28 @@ body
 	z-index:-9
 	margin-top: 1em
 
+////@media screen and (max-width: 600px)
+////	#inputScroll
+////		height: 9.75em
+////		width: 11.75em
+
+
 inputs_ink = #530
+inputs_background = #eda
 #inputs
 	position: relative
 	table
-		position:absolute
-		color: #530
+		position: absolute
+		color: inputs_ink
 		left: 4em
-		top: 4em
+		top: 5em
 	input, select, button
 		color: inputs_ink
-		background-color: #eda
+		background-color: inputs_background
+
+@media screen and (max-width: 700px)
+	#inputs
+		font-size: 50%
 
 
 	
@@ -180,19 +191,18 @@ inputs_ink = #530
 
 #conclusionZone
 	width: 90%
-	min-height: 100px
-	float: left
-	margin: 1em 0
-	padding: 1em
-	border: 1px solid #ffc
-	background-color: #334
+	.reckoningBox
+		min-height: 100px
+		float: left
+		margin: .3em
+		padding: 1em
+		border: 1px solid #ffc
+		background-color: #334
+		.reckoningTitle
+			font-size: minor_heading_size
 	.error
 		color: #f88
-	.reckoning
-		font-size: minor_heading_size
-	.explanation
-		float: right
-		padding-left: 2em
+	.daysReckoning
 		tr td:first-child
 			text-align: right
 			font-size: minor_heading_size
@@ -201,6 +211,8 @@ inputs_ink = #530
 		vertical-align:top
 		text-align:right
 		width:8em
+	.prognosticationBox
+		//font-size: 1.4em
 
 #resultsWrapper
 	.scrollyCaption

@@ -155,8 +155,6 @@ Formula.prototype = {
 		var html = '<div id=f'+ this.serial +' class=formulaZone >\n';
 		html += this.genFormulaLine();
 		html += this.genInceptionLine();
-		//if (expl)
-		//	html += this.genExplanationSection();
 		html += this.genTargetLine();
 		html += '</div>\n';
 		return html;
@@ -183,15 +181,62 @@ Formula.prototype = {
 	},
 
 	// generate several lines explaining  how date gap works
-	genExplanationSection: function ges() {
+	genSummaryBox: function ges(conclusion) {
+		var html = '';
+	
+		var hoverTip = "'These are the numbers in your resulting formula, and where they come from.\nYou can change which verses and numbers are referenced, below.'";
+		html += "<div class='reckoningBox prognosticationBox' title="+ hoverTip +" >\n";
+
+		html += "<div class=reckoningTitle>Prognostication</div>";
+		html += "Armageddon will begin on "+ this.target.formatDate() +' according to this formula:\n';
+
+
+
+
+
+		html += this.genFormulaLine();
+		html += '</div>\n';
+		return html;
+	},
+
+	// generate several lines explaining  how date gap works
+	genVerseReckoning: function ges(conclusion) {
+		var html = '';
+	
+		var hoverTip = "'These are the numbers in your resulting formula, and where they come from.\nYou can change which verses and numbers are referenced, below.'";
+		html += "<div class='reckoningBox versesReckoning' title="+ hoverTip +" >\n";
+
+		html += "<div class=reckoningTitle>Reckoning of Verses</div>";
+
+		// the following are in the table so the cols line up
+		html += '<table>\n';
+		html += this.inception.tableFormat('inception', 'This is the starting date for your calculation.');
+	
+		// the three numbers.
+		html += conclusion.alphaVerse.tableFormat('conAlpha');
+		if (this.beta)
+			html += conclusion.betaVerse.tableFormat('conBeta');
+		html += conclusion.omegaVerse.tableFormat('conOmega');
+
+		////this.raw.target[2] = 'Armageddon';
+		////this.raw.target[3] = 'your choice';
+		html += this.target.tableFormat('target', 'This is the date you chose for Armageddon. \nScroll up and click Justify to change it');
+		
+		// to the end
+		html += '</table></div>\n';
+		return html;
+	},
+
+	// generate several lines explaining  how date gap works
+	genDateReckoning: function ges() {
 		var html = '';
 	
 		// explanation part off to the right
-		var title = "'There are "+ this.explain_gap +
+		var hoverTip = "'There are "+ this.explain_gap +
 			" days between your starting date and Armageddon.  \nThis shows you how that number is reckoned.'";
-		html += "<div class=explanation title="+ title +" >\n";
+		html += "<div class='reckoningBox daysReckoning' title="+ hoverTip +" >\n";
 
-		html += "<div class=reckoning>Reckoning of Days</div>";
+		html += "<div class=reckoningTitle>Reckoning of Days</div>";
 		html += "<table style=font-size:100% >\n";
 
 		html += '<td> <td>starting at '+ this.inception.formatDate() +'\n';
@@ -239,26 +284,11 @@ Formula.prototype = {
 	formatConclusion: function(conclusion) {
 		var html = '';
 	
-		html += this.genExplanationSection()
+		html += this.genSummaryBox();
+		html += this.genDateReckoning()
+		html += this.genVerseReckoning(conclusion)
 	
-		html += this.genFormulaLine();
 
-		// the following are in the table so the cols line up
-		html += '<table>\n';
-		html += this.inception.tableFormat('inception', 'This is the starting date for your calculation.');
-	
-		// the three numbers.
-		html += conclusion.alphaVerse.tableFormat('conAlpha');
-		if (this.beta)
-			html += conclusion.betaVerse.tableFormat('conBeta');
-		html += conclusion.omegaVerse.tableFormat('conOmega');
-
-		////this.raw.target[2] = 'Armageddon';
-		////this.raw.target[3] = 'your choice';
-		html += this.target.tableFormat('target', 'This is the date you chose for Armageddon. \nScroll up and click Justify to change it');
-		
-		// to the end
-		html += '</table>\n';
 		return html;
 	}
 

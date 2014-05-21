@@ -28,7 +28,7 @@ Conclusion.prototype = {
 		
 		if (! this.formula) {
 			// should never happen.  We don't draw till user clicks on formula!
-			Conclusion.display("<div class=error>You need a formula!  choose one above, right.</div>\n", false);
+			Conclusion.display("<div class=error>You need a formula!  choose one above, right.</div>\n");
 		}
 		else {
 			Conclusion.display(this.draw(), true);

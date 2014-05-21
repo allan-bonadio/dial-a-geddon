@@ -177,16 +177,6 @@ function loadWholeDirectory(dirName, dictToAddTo, uponDone, uponReload) {
 					if (--starts <= 0 && uponDone)
 						uponDone(fn);
 				});
-			////fs.readFile(filePath, function itsBytes(er, bytes) {
-			////	// read-one-file callback.
-			////	// each one completes at random, just make sure you got them all
-			////	if (er)
-			////		serverBomb(er);
-			////	dictToAddTo[fileName] = bytes;
-			////	console.log("Loaded %s, %d bytes", fileName, bytes.length);
-			////	if (--starts <= 0 && uponDone)
-			////		uponDone(dictToAddTo);
-			////});
 			
 			// now, set a watch on that file to update it if it changes, if i'm debugging
 			if (! productionMode) {

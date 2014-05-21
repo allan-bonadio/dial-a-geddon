@@ -13,8 +13,9 @@ runOnce ( )
 	# --debug works with node-inspector --debug-brk causes stop at first stmt
 	# just do a node-inspector & somewhere.
 	node app --dev     # no node-inspector
-	#node --debug app  --dev
-	#node --debug-brk app --dev
+	#node --debug app  --dev   # debug, start immediately
+	#node --debug-brk app --dev    # debug, breakpoint at first statement
+	# debugger: run node-inspector& first then open in chrome
 	
 	if [ "$startTime" = `date +%s` ]
 	then exit 1  # must have crashed immediately
