@@ -216,16 +216,10 @@ inputs_background = #eda
 
 #resultsWrapper
 	.scrollyCaption
-		float: left
-		height: 5em
-		width: 45%
-		text-align: left
 		vertical-align: bottom
 		margin: 0 1em 0 0
 	.scrolly
-		float: left
-		height: 600px
-		width: 45%
+		height: 60%
 		overflow-y: auto
 		margin: 0 1em 0 0
 
@@ -250,13 +244,14 @@ inputs_background = #eda
 		.verseTitleBar
 			background-color: #693
 
-a.cite
+.cite
 	color: #cfc
 	font-size: 70%
 	font-style: normal
 	cursor: default
-	&[href]
-		cursor: pointer
+
+a.cite[href]
+	cursor: pointer
 
 // in verses and in the conclusion
 .verseText
@@ -313,7 +308,7 @@ a.cite
 		width: 24em
 		padding: 1em
 		background: #730
-		border: #aaa 1px outset
+		border: #aaa 3px outset
 
 ////# FSI
 ////	@media screen and (min-width: 50em)

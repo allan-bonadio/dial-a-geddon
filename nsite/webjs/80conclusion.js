@@ -62,23 +62,15 @@ Conclusion.activate = function ca() {
 	con.activate();
 }
 
+// squirt some html into the conclusion area, and make it visible
 Conclusion.display = function cd(html, success) {
-	with ($('#conclusionZone')[0]) {
-		innerHTML = html;
-		style.display = 'block';
-		style.backgroundColor = success ? '#222' : '822';
-	}
+	($('#conclusionZone').html(html).css('display', 'block').css('background-color', success ? '#222' : '#822');
+////	with ($('#conclusionZone')[0]) {
+////		innerHTML = html;
+////		style.display = 'block';
+////		style.backgroundColor = success ? '#222' : '822';
+////	}
 }
-
-var ConclusionView = Backbone.View.extend({
-	el: 'body',
-
-	render: function ()
-	{
-		$(this.el).html("hello ConclusionView");
-		return this;
-	}
-});
 
 
 ///////////////////////////////////////////////// Generation, top level

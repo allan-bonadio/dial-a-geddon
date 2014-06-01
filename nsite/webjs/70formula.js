@@ -2,7 +2,10 @@
 // someday make this preferenceable
 function formatADate(year, month, date) {
 	var mo = [0, 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][month];
-	return date +" "+ mo +" "+ year;
+
+
+	////return date +" "+ mo +" "+ year;
+	return mo +" "+ date +", "+ year;
 }
 
 // convert our terse internal date format (2012-01-02) to human form (2 Jan 2012)
@@ -187,15 +190,11 @@ Formula.prototype = {
 		var hoverTip = "'These are the numbers in your resulting formula, and where they come from.\nYou can change which verses and numbers are referenced, below.'";
 		html += "<div class='reckoningBox prognosticationBox' title="+ hoverTip +" >\n";
 
-		html += "<div class=reckoningTitle>Prognostication</div>";
+		html += "<big><div class=reckoningTitle>Prognostication</div>";
 		html += "Armageddon will begin on "+ this.target.formatDate() +' according to this formula:\n';
 
-
-
-
-
 		html += this.genFormulaLine();
-		html += '</div>\n';
+		html += '</div></big>\n';
 		return html;
 	},
 
