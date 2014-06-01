@@ -64,7 +64,7 @@ Conclusion.activate = function ca() {
 
 // squirt some html into the conclusion area, and make it visible
 Conclusion.display = function cd(html, success) {
-	($('#conclusionZone').html(html).css('display', 'block').css('background-color', success ? '#222' : '#822');
+	$('#conclusionZone').html(html).css('display', 'block').css('background-color', success ? '#222' : '#822');
 ////	with ($('#conclusionZone')[0]) {
 ////		innerHTML = html;
 ////		style.display = 'block';
