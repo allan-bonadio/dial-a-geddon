@@ -147,29 +147,44 @@ static void testFormat(void) {
 	assertSame(buf, "1582-1-1");
 }
 
+static int lastSdn, lastYear;
+
+// figure out jan1 on the year passed in; print diff between that and last year
+void printTMO(int y) {
+    // aint no year zero
+    if (y == 0)
+        return;
+
+    int sdn = collectToSdn(y, 1, 1);
+    printf("year %d jan1 is %d, %d days\n", lastYear, sdn, sdn-lastSdn);
+    lastSdn = sdn;
+    lastYear = y;
+}
+
 static void testMilleniumOffsetting(void) {
-	int y, lastSdn = 256406;
+	int y;
+    lastSdn = 1;
+    lastYear = -9999;
 	printf("Check the last column printed; should be 365 or 366 depending on year.\n");
 	printf("Check esp: 366 every 4 years, and for gregorian: 365 every 100 years, 366 every 400 years.\n");
-	printf("gregorian:\n");
-	for (y = -4010; y < -2990; y++) {
-		int sdn = collectToSdn(y, 1, 1);
-		printf("year %d jan1 is %d, %d days\n", y, sdn, sdn-lastSdn);
-		lastSdn = sdn;
-	}
-	printf("\njulian:\n");
-	for (y = 990; y < 1310; y++) {
-		int sdn = collectToSdn(y, 1, 1);
-		printf("year %d jan1 is %d, %d days\n", y, sdn, sdn-lastSdn);
-		lastSdn = sdn;
-	}
+	printf("BC: leaps should be -1, -5, ... add 1 for ÷4.  edges are big; ignore.\n");
+	printf("\njulian BC:\n");
+	for (y = -4010; y < -3990; y++)
+        printTMO(y);
+	for (y = -3010; y < -2990; y++)
+        printTMO(y);
+	printf("\njulian BC-ADAD:\n");
+	for (y = -120; y < 120; y++)
+        printTMO(y);
+	printf("\njulian AD:\n");
+	for (y = 990; y < 1310; y++)
+        printTMO(y);
+	printf("\njulian to gregorian:\n");
+	for (y = 1490; y < 1710; y++)
+        printTMO(y);
 	printf("\ngregorian:\n");
-	for (y = 1690; y < 2111; y++) {
-		int sdn = collectToSdn(y, 1, 1);
-		// count of days from jan1 last year to jan1 this year = ndays in last year
-		printf("year %d jan1 is %d, %d days\n", (y-1), sdn, sdn-lastSdn);
-		lastSdn = sdn;
-	}
+	for (y = 1890; y < 2111; y++)
+        printTMO(y);
 	exit(0);
 }
 

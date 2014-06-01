@@ -12,6 +12,20 @@
 #include <stdlib.h>
 #include <string.h>
 
+
+///////////////////////////////////////// tracing throughout
+
+// traceFlags - zero = production, each bit represents an area to trace
+extern int traceFlags;
+extern bool tr(...);
+#define trIF(flags) ((bool)((flags) & traceFlags))
+
+// trace areas
+#define traceNumRefsDump  1
+#define traceExplanation  2
+#define traceA  1024
+
+
 ///////////////////////////////////////// Y strings: char[YSTR_LEN]
 // a string long enough for all citations (1 corinthians 999:999) and lots of other useful strings,
 // but not a whole verse.

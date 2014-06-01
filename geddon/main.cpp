@@ -12,6 +12,7 @@
 #include <time.h>
 #include <assert.h>
 #include <sys/resource.h>
+#include <stdarg.h>
 
 
 static time_t tnow = time(NULL);
@@ -27,6 +28,30 @@ long hitListMaxLen = 10;
 const long refsListMaxLen (hitListMaxMaxLen / 2);
 
 int realms = 3;
+
+
+
+///////////////////////////////////////// tracing throughout
+
+
+int traceFlags = 0;
+
+// trace function used everywhere except impromptu tracing.
+bool tr(int flag, const char *fmt, ...) {
+    va_list args;
+    
+    if (flag & traceFlags) {
+        
+        va_start(args, fmt);
+        vprintf(fmt, args);
+        va_end(args);
+        
+    
+    }
+    
+    return !!(flag & traceFlags);
+}
+
 
 
 ////////////////////////////////////////////// Refs Output
@@ -151,6 +176,99 @@ bool isUnique(char *formula, bool isNew) {
 	return true;
 }
 
+
+// figure out how many years and leapyears are between the given days.
+// fromDay and toDay are always Jan 1 in whichever year
+// (otherwise you have to feel around for whether you're before/after feb 29...)
+static void yearsAndLeaps(int fromDay, int toDay, int* years, int* leaps) {
+    int fy, fm, fd, ty, tm, td;
+	SdnToJulian(fromDay, &fy, &fm, &fd);
+	SdnToJulian(toDay,   &ty, &tm, &td);
+    
+    *years = ty - fy;
+    if ((ty < 0) ^ (fy < 0))
+        *years -= 1;  // no yr zero
+    *leaps = (toDay - fromDay) - *years * 365;
+}
+
+
+// pritn the explanation which becomes the 'reckoning of days'
+static void printExplanation(Number *omega, int incep, int targ) {
+	// ok some explainations for date calculations:
+	int gap = deltaNum + omega->number;
+	char tbuf[YSTR_LEN];
+	printf("\"explain_gap\": %d,\n", gap);  // gap from inception to target
+    
+	int year, month, day, daze, next, eix = 0, years, leaps;
+	char *explain_days[10];  // never needs more than this number of sentences
+	Ystr toStartOfNextYear, toYear1, to1582, in1582, toTargetYear, toTargetDate;
+	SdnToJulian(incep, &year, &month, &day);
+	
+	int here = incep;
+
+	// starting from here= inception date to target date
+	if (month != 1 || day != 1) {
+		// how long to start of next year
+		next = collectToSdn(year+1, 1, 1);
+		////formatToSdn(next, nextBuf);
+		snprintf(toStartOfNextYear, YSTR_LEN, "%d days to start of year %d%s", next - here,
+                 (year < 0) ? 1-year : 1+year, (year < 0) ? "bc" : "");
+		explain_days[eix++] = toStartOfNextYear;
+		here = next;
+	}
+	if (here <= 1721424) {
+		// how long to year 1ad
+		daze = 1721424 - here;
+        yearsAndLeaps(here, 1721424, &years, &leaps);
+		snprintf(toYear1, YSTR_LEN, "%d days to start of year 1ad (%d years with %d leaps)",
+                 daze, years, leaps);
+		explain_days[eix++] = toYear1;
+		here = 1721424;
+	}
+	if (here <= 2298884) {// jan 1 1582
+		// how long to julian-gregorian switchover in 1582 & past
+		daze = 2298884 - here;
+        if (daze) {
+            yearsAndLeaps(here, 2298884, &years, &leaps);
+            snprintf(to1582, YSTR_LEN, "%d days to start of 1582 (%d years with %d leaps)",
+                     daze, years, leaps);
+            explain_days[eix++] = to1582;
+        }
+		
+		snprintf(in1582, YSTR_LEN, "355 days in year 1582 (Gregorian switchover)");
+		explain_days[eix++] = in1582;
+		here = 2299239;  // jan 1 1583
+	}
+	// start of target year
+	SdnToGregorian(targ, &year, &month, &day);
+	next = collectToSdn(year, 1, 1);
+	daze = next - here;
+    yearsAndLeaps(here, next, &years, &leaps);
+	snprintf(toTargetYear, YSTR_LEN, "%d days to start of %d (%d years with %d leaps)",
+             daze, year, years, leaps);
+	explain_days[eix++] = toTargetYear;
+	here = next;
+	
+	if (1 != month && 1 != day) {
+		snprintf(toTargetDate, YSTR_LEN, "%d days to %s", targ - here, tbuf);
+		explain_days[eix++] = toTargetDate;
+	}
+	
+	// now make a json array of them howevermany
+	printf("\"explain_days\": [");
+	int i = 0;
+	while (true) {
+		printf("\"%s\"", explain_days[i]);
+		i++;
+		if (i >= eix)
+			break;
+		printf(", ");
+	}
+	printf("]\n");
+	
+
+}
+
 // the callback I use when a formula hit is found
 void printEm(Number *omega, int incep, int targ) {
 	char tbuf[YSTR_LEN];
@@ -196,75 +314,11 @@ void printEm(Number *omega, int incep, int targ) {
 	// these each have 1 ref; that's the way it works
 	printf("\"inception\": [%d, \"%s\", \"%s\", \"%s\"],\n", incep, ibuf, inceptionObj->description, inceptionObj->verse);
 	printf("\"target\": [%d, \"%s\"],\n", targ, tbuf);
+	
+    printExplanation(omega, incep, targ);
 
-	
-	// ok some explainations for date calculations:
-	int gap = deltaNum + omega->number;
-	printf("\"explain_gap\": %d,\n", gap);  // gap from inception to target
-	
-	int here = incep;
-	int year, month, day, daze, next, eix = 0;
-	char *explain_days[10];
-	Ystr toStartOfNextYear, toYear1, to1582, in1582, toTargetYear, toTargetDate;
-	SdnToJulian(here, &year, &month, &day);
-	
-	// starting from here= inception date to target date
-	if (month != 1 || day != 1) {
-		// how long to start of next year
-		next = collectToSdn(year+1, 1, 1);
-		////formatToSdn(next, nextBuf);
-		snprintf(toStartOfNextYear, YSTR_LEN, "%d days to start of year %d", next - here, year + 1);
-		explain_days[eix++] = toStartOfNextYear;
-		here = next;
-	}
-	if (here < 1721424) {
-		// how long to year 1
-		daze = 1721424 - here;
-		snprintf(toYear1, YSTR_LEN, "%d days to start of year 1 (%d years with %d leaps)", 
-					daze, daze / 365, daze % 365);
-		explain_days[eix++] = toYear1;
-		here = 0;
-	}
-	if (here < 2298884) {// jan 1 1582
-		// how long to julian-gregorian switchover in 1582 & past
-		daze = 2298884 - here;
-		snprintf(to1582, YSTR_LEN, "%d days to start of 1582 (%d years with %d leaps)", 
-				daze, daze / 365, daze % 365);
-		explain_days[eix++] = to1582;
-		
-		snprintf(in1582, YSTR_LEN, "355 days in year 1582");
-		explain_days[eix++] = in1582;
-		here = 2299239;  // jan 1 1583
-	}
-	// start of target year
-	SdnToGregorian(targ, &year, &month, &day);
-	next = collectToSdn(year, 1, 1);
-	daze = next - here;
-	snprintf(toTargetYear, YSTR_LEN, "%d days to start of %d (%d years with %d leaps)", 
-				daze, year, daze / 365, daze % 365);
-	explain_days[eix++] = toTargetYear;
-	here = next;
-	
-	if (1 != month && 1 != day) {
-		snprintf(toTargetDate, YSTR_LEN, "%d days to %s", targ - here, tbuf);
-		explain_days[eix++] = toTargetDate;
-	}
-	
-	// now make a json array of them howevermany
-	printf("\"explain_days\": [");
-	int i = 0;
-	while (true) {
-		printf("\"%s\"", explain_days[i]);
-		i++;
-		if (i >= eix)
-			break;
-		printf(", ");
-	}
-	printf("]\n");
-	
-	printf("},\n");
-	
-	
+    // end of num object
+    printf("},\n");
 	hitCount++;
 }
 
@@ -293,6 +347,10 @@ void setOneAjaxArg(const Ystr key, const Ystr value) {
 	else if (strcasecmp("realms", key) == 0) {
 		// 2=addition formula only; 3 = add and multiply formulas
 		realms = (int) strtol(value, NULL, 10);
+	}
+	else if (strcasecmp("ace-tray", key) == 0) {
+		// traceFlags flags see tr()
+		traceFlags = (int) strtol(value, NULL, 16);  // in hex!
 	}
 	else
 		printf("unknown %s = %s\n", key, value);
@@ -344,7 +402,7 @@ static void genAllHits() {
 	Ystr  sstr, estr;
 	formatSdn(targetStart, sstr);
 	formatSdn(targetEnd, estr);
-	printf("target dates %d=%s ... %d=%s is target date\n", targetStart, sstr, targetEnd, estr);////
+	////printf("target dates %d=%s ... %d=%s is target date\n", targetStart, sstr, targetEnd, estr);////
 
 	printAHit = printEm;
 	lookupCallback = clarifyForRange;
@@ -398,7 +456,6 @@ int main (int argc, char * const argv[], char * const environment[]) {
 		////	printf("char '%c' (ox%x) iza space=%d, iza blank=%d\n", jj, jj, isspace(jj), isblank(jj));
 		////}
 		
-		setupNumbers();  // required for normal & tests
 		char *qs = getenv("QUERY_STRING");
 		
 		if (qs) {
@@ -407,15 +464,19 @@ int main (int argc, char * const argv[], char * const environment[]) {
 			printf("Content-Type: text/plain\n");
 			printf("\n");
 
-			printf("must be from a web page - query string is `%s`\n", qs);////
+			////printf("must be from a web page - query string is `%s`\n", qs);////
 			printAHit = printEm;
 			setAjaxArgs(qs);
+            setupNumbers();  // also sets trace flags
+            
+            
 			arbitrateStartEndDate(&targetStart, &targetEnd);
 		
 			genAllHits();
 		}
 		else {
 			// command line date
+            setupNumbers();  // required for normal & tests
 			switch (argc) {
 				case 2:
 					printf("must be from the command line - argv1 is %s\n", argv[1]);////

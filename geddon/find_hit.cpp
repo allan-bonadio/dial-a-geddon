@@ -105,24 +105,23 @@ void setupNumbers(void) {
 		}
 	}
 	
-#if 0
-	// dump out ALL the number refs, just for a look.
-	printf("\n    smallNumberIndex:\n");
-	for (int n = 0; n < HIGHEST_BIBLE_SMALL; n++) {
-		for (Number *num = smallNumberIndex[n]; num; num = (Number *) num->nextSame)
-			printf("%d: %s: %s\n", num->number, num->verse, num->description);
-	}
-	printf("\n\n   largeNumberIndex:\n");
-	for (int nn = 0; nn < HIGHEST_BIBLE_HUNDRED; nn++)	{
-		for (Number *num = largeNumberIndex[nn]; num; num = (Number *) num->nextSame)
-			printf("%d: %s: %s\n", num->number, num->verse, num->description);
-	}
-	printf("\n\n   hugeNumberIndex:\n");
-	for (Number *num = hugeNumberIndex; num; num = (Number *) num->nextSame)
-		printf("%d: %s: %s\n", num->number, num->verse, num->description);
+    if (trIF(traceNumRefsDump)) {
+        // dump out ALL the number refs, just for a look.
+        printf("\n    smallNumberIndex:\n");
+        for (int n = 0; n < HIGHEST_BIBLE_SMALL; n++) {
+            for (Number *num = smallNumberIndex[n]; num; num = (Number *) num->nextSame)
+                printf("%d: %s: %s\n", num->number, num->verse, num->description);
+        }
+        printf("\n\n   largeNumberIndex:\n");
+        for (int nn = 0; nn < HIGHEST_BIBLE_HUNDRED; nn++)	{
+            for (Number *num = largeNumberIndex[nn]; num; num = (Number *) num->nextSame)
+                printf("%d: %s: %s\n", num->number, num->verse, num->description);
+        }
+        printf("\n\n   hugeNumberIndex:\n");
+        for (Number *num = hugeNumberIndex; num; num = (Number *) num->nextSame)
+            printf("%d: %s: %s\n", num->number, num->verse, num->description);
 	
-	
-#endif
+	}
 
 	// just need to set inceptionDateCount
 	for (inceptionDateCount = 0; ; inceptionDateCount++)
