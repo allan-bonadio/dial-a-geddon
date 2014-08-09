@@ -28,7 +28,7 @@ function Verse(numRefRef) {
 }
 
 Verse.listOfVerses = [];
-Verse.sampLength = 40;
+Verse.sampLength = 40;  // chars to show if eliding
 
 Verse.prototype.dispose = function() {
 	this.numCentral = null;
@@ -49,7 +49,7 @@ Verse.prototype.crossLink = function cl() {
 	this.verseNode.verse = this;
 }
 
-// gen HTML for this verse, just the essense text in the middle
+// gen HTML for this verse, just the essence text in the middle
 // charsToShow = Verse.sampLength to elide the end or 99999 for all
 Verse.prototype.format = function(charsToShow) {
 	// split up by numbertags
@@ -157,6 +157,7 @@ Verse.prototype.isExpanded = function() {
 
 Verse.charsPerMilliSec = 40 * 0.001;
 
+// start the expanding going
 Verse.prototype.expand = function() {
 	if (this.expandStart)
 		return;  // dont overwrite expandInt well never stop
@@ -173,7 +174,7 @@ Verse.prototype.expand = function() {
 	// never collapses
 }
 
-
+// called repeatedly to expand animate
 Verse.prototype.keepExpanding = function() {
 	var pos = ( (new Date()).getTime() - this.expandStart) * Verse.charsPerMilliSec;
 	var newText = this.format(pos + Verse.sampLength);
