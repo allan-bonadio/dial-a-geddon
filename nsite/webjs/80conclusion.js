@@ -101,6 +101,7 @@ function genResults(returnedJson, optionsWithDate) {
 				tree = new Function('{return '+ returnedJson +'}')();
 		} catch (e) {
 			console.error("error: malformed return text, starts with `%s...`", returnedJson.substr(0, 50));
+			tree = {hits: [0], refs: [0]};
 		}
 		
 		tree.hits.pop();  // the zero on the end
