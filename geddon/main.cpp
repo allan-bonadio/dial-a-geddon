@@ -458,7 +458,6 @@ int main (int argc, char * const argv[], char * const environment[]) {
 		////}
 		
 		const char *qs = getenv("QUERY_STRING");
-		qs = "action=justify&limit=10&year=2015&month=4&date=17";
 		
 		if (qs) {
 			// must be from a web page or ajax request
