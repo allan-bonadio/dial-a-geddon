@@ -4,6 +4,9 @@
 // Copyright (C) 2011-2011 Tactile Interactive Software Inc.
 // All Rights Reserved
 //
+// how to start it up:
+// dev: ./keepServing.sh
+// production: i guess    node app.js &
 
 /* bug / wish list
 - responsive design!  Make it usable on a phone.

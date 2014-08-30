@@ -192,7 +192,7 @@ static void yearsAndLeaps(int fromDay, int toDay, int* years, int* leaps) {
 }
 
 
-// pritn the explanation which becomes the 'reckoning of days'
+// print the explanation which becomes the 'reckoning of days'
 static void printExplanation(Number *omega, int incep, int targ) {
 	// ok some explainations for date calculations:
 	int gap = deltaNum + omega->number;
@@ -250,6 +250,7 @@ static void printExplanation(Number *omega, int incep, int targ) {
 	here = next;
 	
 	if (1 != month && 1 != day) {
+		formatSdn(targ, tbuf);
 		snprintf(toTargetDate, YSTR_LEN, "%d days to %s", targ - here, tbuf);
 		explain_days[eix++] = toTargetDate;
 	}
@@ -456,7 +457,7 @@ int main (int argc, char * const argv[], char * const environment[]) {
 		////	printf("char '%c' (ox%x) iza space=%d, iza blank=%d\n", jj, jj, isspace(jj), isblank(jj));
 		////}
 		
-		char *qs = getenv("QUERY_STRING");
+		const char *qs = getenv("QUERY_STRING");
 		
 		if (qs) {
 			// must be from a web page or ajax request
